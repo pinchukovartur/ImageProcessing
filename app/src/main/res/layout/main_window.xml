@@ -11,11 +11,7 @@
         android:id="@+id/newImageButton"
         android:background="#8583f4"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="37dp"
-        android:layout_marginStart="37dp"
-        android:layout_marginBottom="45dp" />
+        android:layout_centerHorizontal="true" />
 
     <ImageView
         android:layout_width="300dp"
@@ -25,7 +21,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/newImageButton" />
 
     <Button
         android:layout_width="wrap_content"
@@ -33,11 +30,9 @@
         android:text="Save Image"
         android:id="@+id/saveButton"
         android:background="#8583f4"
-        android:layout_alignTop="@+id/newImageButton"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="41dp"
-        android:layout_marginEnd="41dp" />
+        android:layout_alignParentEnd="true" />
 
     <Button
         android:layout_width="wrap_content"
@@ -46,8 +41,8 @@
         android:id="@+id/filtersButton"
         android:background="#8583f4"
         android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/newImageButton"
-        android:layout_alignStart="@+id/newImageButton" />
+        android:layout_toLeftOf="@+id/newImageButton"
+        android:layout_toStartOf="@+id/newImageButton" />
 
     <Button
         android:layout_width="wrap_content"
@@ -56,6 +51,16 @@
         android:id="@+id/anaglifButton"
         android:background="#8583f4"
         android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/saveButton"
-        android:layout_alignStart="@+id/saveButton" />
+        android:layout_toRightOf="@+id/newImageButton"
+        android:layout_toEndOf="@+id/newImageButton" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reset"
+        android:id="@+id/resetbutton"
+        android:background="#8583f4"
+        android:layout_below="@+id/imageView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

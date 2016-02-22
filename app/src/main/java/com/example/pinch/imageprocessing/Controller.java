@@ -12,10 +12,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import java.io.IOException;
+import java.util.Random;
 
 public class Controller extends AppCompatActivity implements View.OnClickListener {
 
     Bitmap image;
+    Bitmap saveBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,14 +33,19 @@ public class Controller extends AppCompatActivity implements View.OnClickListene
         Button anaglifButton = (Button) findViewById(R.id.anaglifButton);
         anaglifButton.setOnClickListener(this);
 
+        Button resetButton = (Button) findViewById(R.id.resetbutton);
+        resetButton.setOnClickListener(this);
+
+        Button saveButton = (Button) findViewById(R.id.saveButton);
+        saveButton.setOnClickListener(this);
+
 
     }
 
     @Override
     public void onClick(View v) {
-        int[][] matrixFilters = new int[][]{{1,1,1,1,1,1,1},{1,1,1,1,1,1,1},{1,1,1,1,1,1,1},
-                {1,1,1,1,1,1,1},{1,1,1,1,1,1,1},{1,1,1,1,1,1,1},{1,1,1,1,1,1,1}};
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
+
         switch (v.getId()) {
             case R.id.newImageButton:
                 Intent photoPicker = new Intent(Intent.ACTION_GET_CONTENT);
@@ -46,13 +53,32 @@ public class Controller extends AppCompatActivity implements View.OnClickListene
                 startActivityForResult(photoPicker, 0);
                 break;
             case R.id.filtersButton:
-                Filters filters = new Filters(matrixFilters, 7, 40);
-                imageView.setImageBitmap(filters.processingBitmap(image));
-                System.out.println("good work!");
+                if(image!=null) {
+                    double[][] matrixFilters = new double[][]{{-1, -1, -1}, {-1, 9, -1}, {-1, -1, -1}};
+                    Filters filters = new Filters(genFilterMatrix(), 3, 1);
+                    saveBitmap = filters.processingBitmap(image);
+                    imageView.setImageBitmap(saveBitmap);
+                    System.out.println("good work!");
+                }
                 break;
             case R.id.anaglifButton:
-                Anaglif anaglif = new Anaglif(image);
-                imageView.setImageBitmap(anaglif.getAnaglif());
+                if(image!=null) {
+                    System.out.println("do work!");
+                    Anaglif anaglif = new Anaglif();
+                    saveBitmap = anaglif.getAnaglif(image);
+                    imageView.setImageBitmap(saveBitmap);
+                    System.out.println("good work!");
+                }
+                break;
+            case R.id.resetbutton:
+                imageView.setImageBitmap(image);
+                break;
+            case R.id.saveButton:
+                if (saveBitmap!=null) {
+                    SaveImage saveImage = new SaveImage();
+                    saveImage.writeFileSD();
+                    System.out.println("save");
+                }
                 break;
         }
     }
@@ -74,5 +100,15 @@ public class Controller extends AppCompatActivity implements View.OnClickListene
                     imageView.setImageBitmap(image);
                 }
         }
-   }
+    }
+
+    public double [][] genFilterMatrix (){
+        double newFilter [][] = new double[3][3];
+        for (int i = 0; i <3; i++) {
+            for (int j = 0; j <3; j++) {
+                newFilter[i][j]  =  Math.random()*6-3;
+            }
+        }
+        return newFilter;
+    }
 }
