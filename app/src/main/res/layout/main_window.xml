@@ -41,8 +41,8 @@
         android:id="@+id/filtersButton"
         android:background="#8583f4"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/newImageButton"
-        android:layout_toStartOf="@+id/newImageButton" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
@@ -51,8 +51,8 @@
         android:id="@+id/anaglifButton"
         android:background="#8583f4"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/newImageButton"
-        android:layout_toEndOf="@+id/newImageButton" />
+        android:layout_alignLeft="@+id/newImageButton"
+        android:layout_alignStart="@+id/newImageButton" />
 
     <Button
         android:layout_width="wrap_content"
@@ -63,4 +63,21 @@
         android:layout_below="@+id/imageView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Segments"
+        android:id="@+id/segButton"
+        android:background="#8583f4"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:layout_above="@+id/newImageButton"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

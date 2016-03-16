@@ -9,6 +9,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import java.io.IOException;
@@ -18,6 +19,7 @@ public class Controller extends AppCompatActivity implements View.OnClickListene
 
     Bitmap image;
     Bitmap saveBitmap;
+    EditText editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +41,10 @@ public class Controller extends AppCompatActivity implements View.OnClickListene
         Button saveButton = (Button) findViewById(R.id.saveButton);
         saveButton.setOnClickListener(this);
 
+        Button segmentsButton = (Button) findViewById(R.id.segButton);
+        segmentsButton.setOnClickListener(this);
 
+        editText = (EditText) findViewById(R.id.editText);
     }
 
     @Override
@@ -54,20 +59,17 @@ public class Controller extends AppCompatActivity implements View.OnClickListene
                 break;
             case R.id.filtersButton:
                 if(image!=null) {
-                    double[][] matrixFilters = new double[][]{{-1, -1, -1}, {-1, 9, -1}, {-1, -1, -1}};
-                    Filters filters = new Filters(genFilterMatrix(), 3, 1);
+                    double[][] matrixFilters = new double[][]{{-0.99, 0, 0.99}, {0, 0, 0}, {0.99, 0, -0.99}};
+                    Filters filters = new Filters(matrixFilters, 3, 1);
                     saveBitmap = filters.processingBitmap(image);
                     imageView.setImageBitmap(saveBitmap);
-                    System.out.println("good work!");
                 }
                 break;
             case R.id.anaglifButton:
                 if(image!=null) {
-                    System.out.println("do work!");
                     Anaglif anaglif = new Anaglif();
                     saveBitmap = anaglif.getAnaglif(image);
                     imageView.setImageBitmap(saveBitmap);
-                    System.out.println("good work!");
                 }
                 break;
             case R.id.resetbutton:
@@ -75,10 +77,18 @@ public class Controller extends AppCompatActivity implements View.OnClickListene
                 break;
             case R.id.saveButton:
                 if (saveBitmap!=null) {
+                    System.out.println("Сохраняем...");
                     SaveImage saveImage = new SaveImage();
                     saveImage.writeFileSD();
                     System.out.println("save");
                 }
+                break;
+            case R.id.segButton:
+
+                Segmentation segmentation = new Segmentation(image,Integer.valueOf(String.valueOf(editText.getText())));
+                saveBitmap = segmentation.getSegmentation();
+                imageView.setImageBitmap(saveBitmap);
+                System.out.println("OK");
                 break;
         }
     }

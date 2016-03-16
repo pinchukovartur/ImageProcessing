@@ -1,30 +1,12 @@
 package com.example.pinch.imageprocessing;
 
-import android.content.ContentResolver;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.sql.Time;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class SaveImage {
 
@@ -51,8 +33,6 @@ public class SaveImage {
         try {
             // открываем поток для записи
             BufferedWriter bw = new BufferedWriter(new FileWriter(sdFile));
-            // пишем данные
-            bw.write("Содержимое файла на SD");
             // закрываем поток
             bw.close();
             Log.d(LOG_TAG, "Файл записан на SD: " + sdFile.getAbsolutePath());
