@@ -22,8 +22,7 @@ public class Filters {
 
         width = image.getWidth();
         height = image.getHeight();
-        Bitmap newImage = Bitmap.createBitmap(width,
-                height, image.getConfig());
+        Bitmap newImage = Bitmap.createBitmap(width, height, image.getConfig());
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {

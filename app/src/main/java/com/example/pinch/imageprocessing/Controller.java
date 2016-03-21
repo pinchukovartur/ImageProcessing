@@ -13,13 +13,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import java.io.IOException;
-import java.util.Random;
+import java.util.ArrayList;
 
 public class Controller extends AppCompatActivity implements View.OnClickListener {
 
     Bitmap image;
-    Bitmap saveBitmap;
     EditText editText;
+    Bitmap saveBitmap;
+    int scalingFlag;
+    ArrayList<Bitmap> bitmaps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +46,22 @@ public class Controller extends AppCompatActivity implements View.OnClickListene
         Button segmentsButton = (Button) findViewById(R.id.segButton);
         segmentsButton.setOnClickListener(this);
 
+        Button plusButton = (Button) findViewById(R.id.plusButton);
+        plusButton.setOnClickListener(this);
+
+        Button minisButton = (Button) findViewById(R.id.minusButton);
+        minisButton.setOnClickListener(this);
+
         editText = (EditText) findViewById(R.id.editText);
+
+        bitmaps = new ArrayList<>();
+
+        scalingFlag = 1;
     }
 
     @Override
     public void onClick(View v) {
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
-
         switch (v.getId()) {
             case R.id.newImageButton:
                 Intent photoPicker = new Intent(Intent.ACTION_GET_CONTENT);
@@ -58,15 +69,14 @@ public class Controller extends AppCompatActivity implements View.OnClickListene
                 startActivityForResult(photoPicker, 0);
                 break;
             case R.id.filtersButton:
-                if(image!=null) {
-                    double[][] matrixFilters = new double[][]{{-0.99, 0, 0.99}, {0, 0, 0}, {0.99, 0, -0.99}};
-                    Filters filters = new Filters(matrixFilters, 3, 1);
+                if (image != null) {
+                    Filters filters = new Filters(genFilterMatrix(), 3, 1);
                     saveBitmap = filters.processingBitmap(image);
                     imageView.setImageBitmap(saveBitmap);
                 }
                 break;
             case R.id.anaglifButton:
-                if(image!=null) {
+                if (image != null) {
                     Anaglif anaglif = new Anaglif();
                     saveBitmap = anaglif.getAnaglif(image);
                     imageView.setImageBitmap(saveBitmap);
@@ -76,19 +86,34 @@ public class Controller extends AppCompatActivity implements View.OnClickListene
                 imageView.setImageBitmap(image);
                 break;
             case R.id.saveButton:
-                if (saveBitmap!=null) {
+                if (saveBitmap != null) {
                     System.out.println("Сохраняем...");
                     SaveImage saveImage = new SaveImage();
-                    saveImage.writeFileSD();
+                    saveImage.writeFileSD(saveBitmap);
                     System.out.println("save");
                 }
                 break;
             case R.id.segButton:
-
-                Segmentation segmentation = new Segmentation(image,Integer.valueOf(String.valueOf(editText.getText())));
-                saveBitmap = segmentation.getSegmentation();
-                imageView.setImageBitmap(saveBitmap);
-                System.out.println("OK");
+                if (image != null && Integer.valueOf(String.valueOf(editText.getText()))!=null) {
+                    Segmentation segmentation = new Segmentation(image, Integer.valueOf(String.valueOf(editText.getText())));
+                    imageView.setImageBitmap(segmentation.getSegmentation());
+                }
+                break;
+            case R.id.plusButton:
+                if(bitmaps.size()==0) {
+                    Scaling scaling = new Scaling(image, Integer.valueOf(String.valueOf(editText.getText())));
+                    bitmaps = scaling.getScalingList();
+                }
+                if(scalingFlag+1<bitmaps.size()) {
+                    scalingFlag++;
+                    imageView.setImageBitmap(bitmaps.get(scalingFlag));
+                }
+                break;
+            case R.id.minusButton:
+                if(scalingFlag>0 && bitmaps!=null) {
+                    scalingFlag--;
+                    imageView.setImageBitmap(bitmaps.get(scalingFlag));
+                }
                 break;
         }
     }
@@ -112,11 +137,11 @@ public class Controller extends AppCompatActivity implements View.OnClickListene
         }
     }
 
-    public double [][] genFilterMatrix (){
-        double newFilter [][] = new double[3][3];
-        for (int i = 0; i <3; i++) {
-            for (int j = 0; j <3; j++) {
-                newFilter[i][j]  =  Math.random()*6-3;
+    public double[][] genFilterMatrix() {
+        double newFilter[][] = new double[3][3];
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                newFilter[i][j] = Math.random() * 6 - 3;
             }
         }
         return newFilter;
