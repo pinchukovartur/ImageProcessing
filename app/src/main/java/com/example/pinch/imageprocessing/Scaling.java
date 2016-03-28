@@ -1,6 +1,7 @@
 package com.example.pinch.imageprocessing;
 
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 
 import java.util.ArrayList;
 
@@ -38,4 +39,26 @@ public class Scaling {
 
         return bitmaps;
     }
+
+    public Bitmap setRoat(Bitmap bitmap) {
+
+        Bitmap newImage = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), bitmap.getConfig());
+
+        for (int i = 0; i < bitmap.getWidth(); i++) {
+            for (int j = 0; j < bitmap.getHeight(); j++) {
+
+                newImage.setPixel(i, j, bitmap.getPixel(i, j));
+            }
+        }
+        return newImage;
+    }
+
+    public Bitmap rotateBitmap(Bitmap source, float angle)
+    {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
+    }
+
 }

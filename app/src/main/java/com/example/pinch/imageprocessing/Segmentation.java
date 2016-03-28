@@ -7,9 +7,9 @@ import java.util.ArrayList;
 
 public class Segmentation {
 
-    ArrayList<Integer> segments;
-    Bitmap bitmap;
-    int threshold;
+    private  ArrayList<Integer> segments;
+    private  Bitmap bitmap;
+    private  int threshold;
 
     Segmentation(Bitmap bitmap, int threshold) {
         this.bitmap = bitmap;
@@ -23,7 +23,7 @@ public class Segmentation {
         segments = new ArrayList<>();
         segments.add(bitmap.getPixel(0, 0));
 
-        for (int i = 1; i < bitmap.getWidth(); i++) {
+        for (int i = 0; i < bitmap.getWidth(); i++) {
             for (int j = 0; j < bitmap.getHeight(); j++) {
                 newImage.setPixel(i, j, getPixel(i, j));
             }

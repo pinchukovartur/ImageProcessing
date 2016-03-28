@@ -21,8 +21,9 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/filtersButton"
         android:layout_toStartOf="@+id/plusButton"
-        android:layout_toLeftOf="@+id/plusButton"
-        android:layout_alignBottom="@+id/minusButton" />
+        android:layout_alignRight="@+id/segButton"
+        android:layout_alignEnd="@+id/segButton"
+        android:layout_above="@+id/editText" />
 
     <Button
         android:layout_width="wrap_content"
@@ -60,7 +61,7 @@
         android:text="Reset"
         android:id="@+id/resetbutton"
         android:background="#8583f4"
-        android:layout_below="@+id/editText"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -78,9 +79,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/editText"
+        android:inputType="number"
+        android:layout_marginBottom="64dp"
         android:layout_above="@+id/newImageButton"
-        android:layout_centerHorizontal="true"
-        android:inputType="number"/>
+        android:layout_centerHorizontal="true" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -88,10 +90,9 @@
         android:layout_height="wrap_content"
         android:text="+"
         android:id="@+id/plusButton"
-        android:layout_marginTop="32dp"
-        android:layout_alignTop="@+id/imageView"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_below="@+id/imageView"
+        android:layout_toLeftOf="@+id/newImageButton"
+        android:layout_toStartOf="@+id/newImageButton" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -99,7 +100,27 @@
         android:layout_height="wrap_content"
         android:text="-"
         android:id="@+id/minusButton"
-        android:layout_above="@+id/editText"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignTop="@+id/editText"
+        android:layout_toRightOf="@+id/newImageButton"
+        android:layout_toEndOf="@+id/newImageButton" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="&lt;--"
+        android:id="@+id/leftButton"
+        android:layout_above="@+id/resetbutton"
+        android:layout_alignRight="@+id/resetbutton"
+        android:layout_alignEnd="@+id/resetbutton" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-->"
+        android:id="@+id/rightButton"
+        android:layout_above="@+id/saveButton"
+        android:layout_alignLeft="@+id/saveButton"
+        android:layout_alignStart="@+id/saveButton" />
 </RelativeLayout>

@@ -1,8 +1,10 @@
 package com.example.pinch.imageprocessing;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
@@ -17,16 +19,22 @@ import java.util.ArrayList;
 
 public class Controller extends AppCompatActivity implements View.OnClickListener {
 
-    Bitmap image;
-    EditText editText;
-    Bitmap saveBitmap;
-    int scalingFlag;
-    ArrayList<Bitmap> bitmaps;
+    private Bitmap image;
+    private EditText editText;
+    private Bitmap saveBitmap;
+    private int scalingFlag;
+    private ArrayList<Bitmap> bitmaps;
+    private ImageView imageView;
+    private Scaling scaling;
+    private int i=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_window);
+
+        imageView = (ImageView) findViewById(R.id.imageView);
+        imageView.setOnClickListener(this);
 
         Button newImageButton = (Button) findViewById(R.id.newImageButton);
         newImageButton.setOnClickListener(this);
@@ -59,14 +67,16 @@ public class Controller extends AppCompatActivity implements View.OnClickListene
         scalingFlag = 1;
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public void onClick(View v) {
-        ImageView imageView = (ImageView) findViewById(R.id.imageView);
+
         switch (v.getId()) {
             case R.id.newImageButton:
                 Intent photoPicker = new Intent(Intent.ACTION_GET_CONTENT);
                 photoPicker.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE);
                 startActivityForResult(photoPicker, 0);
+                bitmaps.clear();
                 break;
             case R.id.filtersButton:
                 if (image != null) {
@@ -87,32 +97,38 @@ public class Controller extends AppCompatActivity implements View.OnClickListene
                 break;
             case R.id.saveButton:
                 if (saveBitmap != null) {
-                    System.out.println("Сохраняем...");
                     SaveImage saveImage = new SaveImage();
                     saveImage.writeFileSD(saveBitmap);
-                    System.out.println("save");
                 }
                 break;
             case R.id.segButton:
-                if (image != null && Integer.valueOf(String.valueOf(editText.getText()))!=null) {
+                if (image != null && editText.length() != 0) {
                     Segmentation segmentation = new Segmentation(image, Integer.valueOf(String.valueOf(editText.getText())));
                     imageView.setImageBitmap(segmentation.getSegmentation());
                 }
                 break;
             case R.id.plusButton:
-                if(bitmaps.size()==0) {
-                    Scaling scaling = new Scaling(image, Integer.valueOf(String.valueOf(editText.getText())));
+                if (image != null && bitmaps.size() == 0 && editText.length() != 0) {
+                    scaling = new Scaling(image, Integer.valueOf(String.valueOf(editText.getText())));
                     bitmaps = scaling.getScalingList();
                 }
-                if(scalingFlag+1<bitmaps.size()) {
+                if (image != null && scalingFlag + 1 < bitmaps.size()) {
                     scalingFlag++;
                     imageView.setImageBitmap(bitmaps.get(scalingFlag));
                 }
                 break;
             case R.id.minusButton:
-                if(scalingFlag>0 && bitmaps!=null) {
+                if (image != null && scalingFlag > 0 && bitmaps.size() != 0) {
                     scalingFlag--;
                     imageView.setImageBitmap(bitmaps.get(scalingFlag));
+                }
+                break;
+            case R.id.imageView:
+                if (image != null && editText.length() != 0) {
+                    scaling = new Scaling(image, Integer.valueOf(String.valueOf(editText.getText())));
+                    saveBitmap = scaling.rotateBitmap(image, Integer.valueOf(String.valueOf(editText.getText()))*i);
+                    imageView.setImageBitmap(saveBitmap);
+                    i++;
                 }
                 break;
         }

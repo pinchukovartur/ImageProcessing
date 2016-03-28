@@ -10,9 +10,11 @@ public class Anaglif {
         int pixelColorGreenBlue;
         int pixelColorRed;
         int newPixel;
+
         Bitmap newImage = Bitmap.createBitmap(bitmap.getWidth()/2,
                 bitmap.getHeight(), bitmap.getConfig());
-        int nRed = 0,nGreen = 0,nBlue = 0;
+
+        int nRed ,nGreen ,nBlue ;
 
         for(int i = 0; i < bitmap.getWidth()/2; i++) {
                 for (int j = 0; j < bitmap.getHeight(); j++) {
